@@ -36,7 +36,7 @@
           <% } else { %>
           <a class="nav-link" href="/aboutme">
         <% } %>
-          <i class="fa-regular fa-address-card"></i> about</a>
+          <i class="fa-regular fa-address-card"></i> About me</a>
         </li>
 
         <li class="nav-item">
@@ -55,6 +55,15 @@
           <a class="nav-link" href="/contactus">
         <% } %>
           <i class="fa-solid fa-file-signature"></i> contact</a>
+        </li>
+
+        <li class="nav-item">
+        <% if (title == "Courses") {%>
+          <a class="nav-link active" href="/course-list">
+        <% } else { %>
+        <a class="nav-link" href="/course-list">
+        <% } %>
+          <i class="fa-solid fa-graduation-cap"></i>Courses</a>
         </li>
       
     </div>

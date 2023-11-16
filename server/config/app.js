@@ -36,6 +36,8 @@ app.use(express.urlencoded({ extended: false })); // Parsing URL-encoded request
 app.use(cookieParser()); // Parsing cookies
 app.use(express.static(path.join(__dirname, '../../public'))); // Serving static files from the 'public' directory
 app.use(express.static(path.join(__dirname, '../../node_modules'))); // Serving static files from the 'node_modules' directory
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 
 // Routes setup
 app.use('/', indexRouter); // Handling requests to the root path (localhost:3000)

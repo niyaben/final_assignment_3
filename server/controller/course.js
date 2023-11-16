@@ -1,119 +1,124 @@
-var express = require('express');
-var router = express.Router();
-//const { router } = require('../config/app');
+let express = require('express');
+let router = express.Router();
 let Course = require('../models/course');
 
-module.exports.DislayCourselist = async (req,res,next)=>{ //< Mark function as async
-    try{
-       const CourseList = await Course.find(); //< Use of await keyword
-       res.render('course/list', {
-          title: 'Course', 
-          CourseList: CourseList
-       });
-    }catch(err){
-       console.error(err);
-       //Handle error
-       res.render('course/list', {
-          error: 'Error on server'
-       });
-    }
- };
+// Display the list of courses
+module.exports.DislayCourselist = async (req, res, next) => {
+    try {
+        // Fetch the list of courses from the database
+        const CourseList = await Course.find();
 
- module.exports.AddCourse = async (req,res,next)=>{
-    try{
-        res.render('course/add',
-        {
-            title:'Add Course'
-        })
-    }
-    catch(err)
-    {
+        // Render the 'list' view with the retrieved course data
+        res.render('course/list', {
+            title: 'Course List',
+            CourseList: CourseList
+        });
+    } catch (err) {
         console.error(err);
-        res.render('course/list',
-        {
+        // Handle errors and render the 'list' view with an error message
+        res.render('course/list', {
             error: 'Error on the server'
         });
     }
 };
 
-module.exports.ProcessCourse = async (req,res,next)=>{
-    try{
+// Render the form to add a new course
+module.exports.AddCourse = async (req, res, next) => {
+    try {
+        res.render('course/add', {
+            title: 'Add Course'
+        });
+    } catch (err) {
+        console.error(err);
+        res.render('course/list', {
+            error: 'Error on the server'
+        });
+    }
+};
+
+// Process the form data to add a new course
+module.exports.ProcessCourse = async (req, res, next) => {
+    try {
+        // Create a new Course instance with data from the form
         let newCourse = Course({
-            "course_name":req.body.course_name,
+            "course_name": req.body.course_name,
             "course_number": req.body.course_number,
             "Prof_name": req.body.Prof_name,
             "Description": req.body.Description,
             "intake": req.body.intake
-            
         });
-        Course.create(newCourse).then(() =>{
-            res.redirect('/course-list')
-        })
-    }
-    catch(error){
+
+        // Save the new course to the database and redirect to the course list
+        Course.create(newCourse).then(() => {
+            res.redirect('/course-list');
+        });
+    } catch (error) {
         console.error(err);
-        res.render('course/list',
-        {
+        res.render('course/list', {
             error: 'Error on the server'
         });
     }
 };
 
-module.exports.EditCourse = async (req,res,next)=>{
-    try{
-    const id = req.params.id;
-    const courseToEdit = await Course.findById(id);
-    res.render('course/edit',
-    {
-        title:'Edit Course',
-        Course:courseToEdit
-    })
-}
-catch(error){
-    console.error(err);
-    res.render('course/list',
-    {
-        error: 'Error on the server'
-    });
-}
-}
-
-module.exports.ProcessEditCourse = (req,res,next)=>{
-    try{
+// Render the form to edit an existing course
+module.exports.EditCourse = async (req, res, next) => {
+    try {
+        // Retrieve the course to edit from the database using the provided ID
         const id = req.params.id;
+        const courseToEdit = await Course.findById(id);
+
+        // Render the 'edit' view with the retrieved course data
+        res.render('course/edit', {
+            title: 'Edit Course',
+            Course: courseToEdit
+        });
+    } catch (error) {
+        console.error(err);
+        res.render('course/list', {
+            error: 'Error on the server'
+        });
+    }
+};
+
+// Process the form data to edit an existing course
+module.exports.ProcessEditCourse = (req, res, next) => {
+    try {
+        const id = req.params.id;
+
+        // Create an updated Course instance with data from the form
         let updatedCourse = Course({
-            "_id":id,
-            "course_name":req.body.course_name,
+            "_id": id,
+            "course_name": req.body.course_name,
             "course_number": req.body.course_number,
             "Prof_name": req.body.Prof_name,
             "Description": req.body.Description,
             "intake": req.body.intake
         });
-        Course.findByIdAndUpdate(id,updatedCourse).then(()=>{
-            res.redirect('/course-list')
+
+        // Update the course in the database and redirect to the course list
+        Course.findByIdAndUpdate(id, updatedCourse).then(() => {
+            res.redirect('/course-list');
         });
-    }
-    catch(error){
+    } catch (error) {
         console.error(err);
-        res.render('course/list',
-        {
+        res.render('course/list', {
             error: 'Error on the server'
         });
     }
-}
+};
 
-module.exports.DeleteCourse = (req,res,next)=>{
-    try{
+// Delete a course
+module.exports.DeleteCourse = (req, res, next) => {
+    try {
         let id = req.params.id;
-        Course.deleteOne({_id:id}).then(() =>
-        {
-            res.redirect('/course-list')
-        })
-    }
-    catch(error){
+
+        // Delete the course from the database and redirect to the course list
+        Course.deleteOne({ _id: id }).then(() => {
+            res.redirect('/course-list');
+        });
+    } catch (error) {
         console.error(err);
-        res.render('course/list',
-        {
+        res.render('course/list', {
             error: 'Error on the server'
         });
     }

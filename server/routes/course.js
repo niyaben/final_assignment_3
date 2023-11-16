@@ -6,36 +6,6 @@ let mongoose = require('mongoose');
 
 let Course = require('../models/course');
 
-//read operation
-//get route for course list
-
-router.get('/', async (req,res,next)=>{
-    try{
-        const CourseList = await Course.find();
-        res.render('course/list',{
-            title: 'Courses',
-            CourseList: CourseList
-        });
-    }catch(err){
-        console.error(err);
-        //handle error
-        res.render('Bio_courses',{
-            error: 'Error on server'
-        })
-    }
-});
-
-/*Add operation*/ 
-/* Get route for displaying Add operation - Create Operation*/
-/* Post route for displaying Add operation - Create Operation*/
-
-/* Edit Operation */
-/* Get route for displaying Edit operation - Update Operation*/
-/* Post route for displaying Edit operation - Update Operation*/
-
-/* Delete Operation */
-/* Get route for displaying Delete operation - Deletion*/
-
 let CourseController = require('../controller/course')
 /* Get route for the Bio Courses list */
 // Read Operation

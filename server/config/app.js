@@ -1,62 +1,64 @@
-/* 3rd party packeges*/
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
+// Importing third-party packages
+let createError = require('http-errors'); // Package for creating HTTP errors
+let express = require('express'); // Express.js framework for building web applications
+let path = require('path'); // Node.js module for working with file paths
+let cookieParser = require('cookie-parser'); // Middleware for parsing cookies
+let logger = require('morgan'); // Logging middleware for HTTP requests
 
-//configure mongoDB
-let mongoose = require('mongoose');
-let DB = require('./db');
+// Configuring MongoDB
+let mongoose = require('mongoose'); // MongoDB ODM (Object-Document Mapper)
+let DB = require('./db'); // Custom module for MongoDB URI
 
-//point mongoose to db URI
-
+// Pointing mongoose to the MongoDB URI
 mongoose.connect(DB.URI);
 let mongoDB = mongoose.connection;
-mongoDB.on('error',console.error.bind(console,'connection Error:'));
-mongoDB.once('open',()=>{
-console.log('connected to mongoDB');
+mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
+mongoDB.once('open', () => {
+    console.log('Connected to MongoDB');
 });
 
-let indexRouter = require('../routes/index');
-let usersRouter = require('../routes/users');
-let courseRouter = require('../routes/course');
+// Importing route modules
+let indexRouter = require('../routes/index'); // Routes for the root path (localhost:3000)
+let usersRouter = require('../routes/users'); // Routes for user-related paths (localhost:3000/users)
+let courseRouter = require('../routes/course'); // Routes for course-related paths (localhost:3000/course-list)
 
+// Creating an Express application
 let app = express();
 
-// view engine setup
+// Setting up the view engine
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../../public')));
-app.use(express.static(path.join(__dirname, '../../node_modules')));
+// Middleware setup
+app.use(logger('dev')); // Logging HTTP requests in development mode
+app.use(express.json()); // Parsing JSON requests
+app.use(express.urlencoded({ extended: false })); // Parsing URL-encoded requests
+app.use(cookieParser()); // Parsing cookies
+app.use(express.static(path.join(__dirname, '../../public'))); // Serving static files from the 'public' directory
+app.use(express.static(path.join(__dirname, '../../node_modules'))); // Serving static files from the 'node_modules' directory
 
-app.use('/', indexRouter); //localhost:3000
-app.use('/users', usersRouter); //localhost:3000/users
-app.use('/course-list',courseRouter); //localhost:3000/course-list
+// Routes setup
+app.use('/', indexRouter); // Handling requests to the root path (localhost:3000)
+app.use('/users', usersRouter); // Handling requests to user-related paths (localhost:3000/users)
+app.use('/course-list', courseRouter); // Handling requests to course-related paths (localhost:3000/course-list)
 
-// catch 404 and forward to error handler
+// Catching 404 errors and forwarding to the error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, providing error information in development mode
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // Render the error page
   res.status(err.status || 500);
-  res.render('error',
-  {
-      title : "Error"
-  }
-  );
+  res.render('error', {
+    title: "Error"
+  });
 });
 
+// Exporting the configured Express application
 module.exports = app;

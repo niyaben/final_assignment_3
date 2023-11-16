@@ -15,7 +15,7 @@
                 <th class="text-center col-2">course_name</th>
                 <th class="text-center col-2">course_number</th>
                 <th class="text-center col-2">Prof_name</th>
-                <th class="text-center col-1">intake</th>
+                <th class="text-center col-2">intake</th>
                 <th class="text-center col-3">Description</th>
                 <th class="text-center col-1"></th>
                 <th class="text-center col-1"></th>
@@ -25,7 +25,7 @@
                 <td class="text-center col-2"><%= CourseList[count].course_name %></td>
                 <td class="text-center col-2"><%= CourseList[count].course_number %></td>
                 <td class="text-center col-2"><%= CourseList[count].Prof_name %></td>
-                <td class="text-center col-1"><%= CourseList[count].intake %></td>
+                <td class="text-center col-2"><%= CourseList[count].intake %></td>
                 <td class="text-center col-3"><%= CourseList[count].Description %></td>
                 <td class="text-center col-1">
                     <a href="/course-list/edit/<%= CourseList[count]._id %>" 

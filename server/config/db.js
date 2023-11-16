@@ -1,4 +1,4 @@
 module.exports =
 {
-    "URI": "mongodb://127.0.0.1:27017/courses"
+    "URI": "mongodb+srv://niyabenchaudhari:PZZsDNutW7NtBwOD@cluster0.q3l0cwr.mongodb.net/courses"
 }

@@ -18,7 +18,7 @@ header {
 }
 
 nav-item :hover {
-    color: #e4e4e4;
+    color: #e4e4e4 !important;
     opacity: 1 !important;
 
 }
@@ -33,6 +33,7 @@ nav-item :hover {
     font-size: 20px !important;
     
 }
+
 
 .navbar-text a {
     font-size: 20px;
